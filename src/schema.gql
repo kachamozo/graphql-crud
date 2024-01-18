@@ -1,0 +1,73 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Usuario {
+  _id: ID!
+  name: String!
+  email: String!
+  password: String!
+  tareas: [Tarea!]!
+}
+
+type Tarea {
+  _id: ID!
+  nombre: String
+  descripcion: String!
+  usuario: Usuario!
+}
+
+type LoginResponse {
+  email: String!
+  token: String!
+}
+
+type Query {
+  listaDeTareas: [Tarea!]!
+  findById(busqueda: BuscarTareaDto!): Tarea!
+  listaDeUsuarios: [Usuario!]!
+  buscarUsuario(id: String!): Usuario!
+}
+
+input BuscarTareaDto {
+  _id: ID!
+}
+
+type Mutation {
+  crearTarea(data: CreateTareaDto!): Tarea!
+  updateTarea(busqueda: BuscarTareaDto!, data: UpdateTareaDto!): Tarea!
+  eliminarTarea(busqueda: BuscarTareaDto!): String!
+  actualizarUsuario(id: String!, dataUpdate: UpdateUsuarioDto!): Usuario!
+  removerUsuario(id: String!): Usuario!
+  registrarUsuario(dataUser: RegisterDto!): Usuario!
+  loginUsuario(loginUser: LoginDto!): LoginResponse!
+}
+
+input CreateTareaDto {
+  nombre: String!
+  descripcion: String!
+  usuarioId: String!
+}
+
+input UpdateTareaDto {
+  nombre: String
+  descripcion: String
+  usuarioId: String
+}
+
+input UpdateUsuarioDto {
+  name: String
+  email: String
+  password: String
+}
+
+input RegisterDto {
+  email: String!
+  password: String!
+  name: String!
+}
+
+input LoginDto {
+  email: String!
+  password: String!
+}
