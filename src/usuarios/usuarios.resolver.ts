@@ -27,6 +27,7 @@ export class UsuariosResolver {
   }
 
   @Mutation(() => Usuario, { name: 'removerUsuario' })
+  //azx
   removeUsuario(@Args('id', { type: () => String }) id: string) {
     return this.usuariosService.delete(id);
   }
