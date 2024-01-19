@@ -14,7 +14,10 @@ export class UsuariosResolver {
   }
 
   @Query(() => Usuario, { name: 'buscarUsuario' })
-  findOneById(@Args('id', { type: () => String }) id: string) {
+  findOneById(
+    @Args('id', { type: () => String })
+    id: string,
+  ) {
     return this.usuariosService.findOneById(id);
   }
 

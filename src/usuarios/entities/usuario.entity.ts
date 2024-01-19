@@ -10,13 +10,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 import { Tarea } from 'src/tareas/entities/tarea.entity';
 
-const loguerMiddleware: FieldMiddleware = async (
+//<-------------Middleware Graphql--------------->
+export const mayusculaMiddleware: FieldMiddleware = async (
   ctx: MiddlewareContext,
   next: NextFn,
 ) => {
   const value = await next();
-  console.log(value);
-  return value?.toUpperCase();
+  return value.toUpperCase();
 };
 
 @ObjectType()
@@ -25,7 +25,7 @@ export class Usuario {
   @Field(() => ID)
   _id: Types.ObjectId;
 
-  @Field(() => String, { middleware: [loguerMiddleware] })
+  @Field(() => String, { middleware: [mayusculaMiddleware] })
   @Prop()
   name: string;
 

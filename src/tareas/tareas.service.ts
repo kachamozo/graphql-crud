@@ -17,8 +17,6 @@ export class TareasService {
   async create(createTarea: CreateTareaDto): Promise<Tarea> {
     // Buscar al usuario
     const usuario = await this.usuarioModel.findById(createTarea.usuarioId);
-    console.log(createTarea);
-    console.log('usuario', usuario);
 
     // Crear la tarea
     const tarea = new this.tareaModel({

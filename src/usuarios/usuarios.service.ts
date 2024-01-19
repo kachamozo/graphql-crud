@@ -4,11 +4,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './entities/usuario.entity';
 import { Model } from 'mongoose';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { Tarea } from 'src/tareas/entities/tarea.entity';
 
 @Injectable()
 export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
+    @InjectModel(Tarea.name) private readonly tareaModel: Model<Tarea>,
   ) {}
 
   create(createUsuario: CreateUsuarioDto) {
@@ -38,6 +40,8 @@ export class UsuariosService {
     const findUser = await this.usuarioModel.findById(id);
     if (!findUser)
       throw new HttpException('Usuario no encontrado', HttpStatus.FORBIDDEN);
+    await this.tareaModel.deleteMany({ _id: { $in: findUser.tareas } });
+
     return this.usuarioModel.findByIdAndDelete(id);
   }
 }
