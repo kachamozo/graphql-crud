@@ -23,8 +23,8 @@ export class AuthService {
 
     if (user) throw new BadRequestException('El usuario ya esta registrado');
 
-    const hash = await bcrypt.hash(registerDto.password, 10);
-    registerDto = { ...registerDto, password: hash };
+    // const hash = await bcrypt.hash(registerDto.password, 10);
+    // registerDto = { ...registerDto, password: hash };
     return this.usersService.create(registerDto);
   }
 

@@ -9,6 +9,7 @@ import {
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 import { Tarea } from 'src/tareas/entities/tarea.entity';
+import * as bcrypt from 'bcrypt';
 
 //<-------------Middleware Graphql--------------->
 export const mayusculaMiddleware: FieldMiddleware = async (
@@ -43,3 +44,9 @@ export class Usuario {
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);
+
+UsuarioSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, 10);
+
+  next();
+});

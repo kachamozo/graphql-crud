@@ -32,7 +32,9 @@ export class UsuariosService {
     const findUser = await this.usuarioModel.findById(id).exec();
     if (!findUser)
       throw new HttpException('Usuario no encontrado', HttpStatus.FORBIDDEN);
+
     return this.usuarioModel.findByIdAndUpdate(id, updateUsuario, {
+      //new: true es para que cuando eliminemos o actualicemos nos devulva el objeto una ves ya modificado
       new: true,
     });
   }
