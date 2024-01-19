@@ -5,6 +5,7 @@ import { Usuario } from './entities/usuario.entity';
 import { Model } from 'mongoose';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { Tarea } from 'src/tareas/entities/tarea.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuariosService {
@@ -32,7 +33,10 @@ export class UsuariosService {
     const findUser = await this.usuarioModel.findById(id).exec();
     if (!findUser)
       throw new HttpException('Usuario no encontrado', HttpStatus.FORBIDDEN);
-
+    if (updateUsuario.password) {
+      const hash = await bcrypt.hash(updateUsuario.password, 10);
+      updateUsuario = { ...updateUsuario, password: hash };
+    }
     return this.usuarioModel.findByIdAndUpdate(id, updateUsuario, {
       //new: true es para que cuando eliminemos o actualicemos nos devulva el objeto una ves ya modificado
       new: true,
