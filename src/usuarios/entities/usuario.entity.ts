@@ -1,7 +1,23 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  ID,
+  FieldMiddleware,
+  MiddlewareContext,
+  NextFn,
+} from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 import { Tarea } from 'src/tareas/entities/tarea.entity';
+
+const loguerMiddleware: FieldMiddleware = async (
+  ctx: MiddlewareContext,
+  next: NextFn,
+) => {
+  const value = await next();
+  console.log(value);
+  return value?.toUpperCase();
+};
 
 @ObjectType()
 @Schema()
@@ -9,7 +25,7 @@ export class Usuario {
   @Field(() => ID)
   _id: Types.ObjectId;
 
-  @Field(() => String)
+  @Field(() => String, { middleware: [loguerMiddleware] })
   @Prop()
   name: string;
 
