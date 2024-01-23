@@ -19,13 +19,13 @@ export class TareasResolver {
     return this.tareasService.create(createTarea);
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => [Tarea], { name: 'listaDeTareas' })
   findAll() {
     return this.tareasService.findAll();
   }
 
-  @Query(() => Tarea)
-  @UseGuards(AuthGuard)
+  @Query(() => Tarea, { name: 'buscarTarea' })
   findById(@Args('busqueda') busqueda: BuscarTareaDto) {
     return this.tareasService.findById(busqueda);
   }

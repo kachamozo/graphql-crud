@@ -24,7 +24,7 @@ type LoginResponse {
 
 type Query {
   listaDeTareas: [Tarea!]!
-  findById(busqueda: BuscarTareaDto!): Tarea!
+  buscarTarea(busqueda: BuscarTareaDto!): Tarea!
   listaDeUsuarios: [Usuario!]!
   buscarUsuario(id: String!): Usuario!
 }
