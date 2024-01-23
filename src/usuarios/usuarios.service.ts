@@ -3,9 +3,9 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './entities/usuario.entity';
 import { Model } from 'mongoose';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { Tarea } from 'src/tareas/entities/tarea.entity';
 import * as bcrypt from 'bcrypt';
+import { RegisterDto } from 'src/auth/dto/regsiter.dto';
 
 @Injectable()
 export class UsuariosService {
@@ -14,7 +14,7 @@ export class UsuariosService {
     @InjectModel(Tarea.name) private readonly tareaModel: Model<Tarea>,
   ) {}
 
-  create(createUsuario: CreateUsuarioDto) {
+  create(createUsuario: RegisterDto) {
     return this.usuarioModel.create(createUsuario);
   }
 
@@ -23,7 +23,10 @@ export class UsuariosService {
   }
 
   findAll(): Promise<Usuario[]> {
-    return this.usuarioModel.find().exec();
+    return this.usuarioModel
+      .find()
+      .populate('tareas', 'nombre descripcion')
+      .exec();
   }
 
   findOneById(id: string): Promise<Usuario> {

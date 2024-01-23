@@ -21,7 +21,7 @@ export const mayusculaMiddleware: FieldMiddleware = async (
     const value = await next();
     return value.toUpperCase();
   }
-  next();
+  return next();
 };
 
 @ObjectType()
