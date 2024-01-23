@@ -23,7 +23,7 @@ export class UsuariosService {
   }
 
   findAll(): Promise<Usuario[]> {
-    return this.usuarioModel.find().populate('tareas').exec();
+    return this.usuarioModel.find().exec();
   }
 
   findOneById(id: string): Promise<Usuario> {

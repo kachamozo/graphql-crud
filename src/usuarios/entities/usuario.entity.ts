@@ -16,8 +16,12 @@ export const mayusculaMiddleware: FieldMiddleware = async (
   ctx: MiddlewareContext,
   next: NextFn,
 ) => {
-  const value = await next();
-  return value.toUpperCase();
+  //console.log(ctx.info.path.prev.key);
+  if (ctx.info.path.prev.key === 'buscarUsuario') {
+    const value = await next();
+    return value.toUpperCase();
+  }
+  next();
 };
 
 @ObjectType()
