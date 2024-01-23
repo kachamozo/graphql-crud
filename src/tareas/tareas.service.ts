@@ -36,8 +36,10 @@ export class TareasService {
     return this.tareaModel.find().populate('usuario', 'email name').exec();
   }
   findById(busqueda: BuscarTareaDto): Promise<Tarea> {
-    console.log(busqueda);
-    return this.tareaModel.findById(busqueda._id).exec();
+    return this.tareaModel
+      .findById(busqueda._id)
+      .populate('usuario', 'name email')
+      .exec();
   }
 
   //Cuando se usa un dto como buscar tarea dto siempre es un objeto, nunca colocar busqueda._id
