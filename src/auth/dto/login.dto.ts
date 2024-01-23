@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { PasswordValidator } from '../decoradores/password.decorador';
 
 @InputType()
 export class LoginDto {
@@ -15,5 +16,6 @@ export class LoginDto {
   @Transform(({ value }) => value.trim())
   @IsString()
   @MinLength(6)
+  @PasswordValidator()
   password: string;
 }
