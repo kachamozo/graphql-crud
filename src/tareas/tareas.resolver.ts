@@ -4,7 +4,7 @@ import { Tarea } from './entities/tarea.entity';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { BuscarTareaDto } from './dto/buacar-tarea.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Tarea)

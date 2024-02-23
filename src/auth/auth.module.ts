@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
-import { UsuariosModule } from 'src/usuarios/usuarios.module';
+import { UsuariosModule } from '../usuarios/usuarios.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/jwt.constants';
 import { AuthGuard } from './guards/auth.guard';

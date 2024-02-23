@@ -5,7 +5,7 @@ import { Tarea } from './entities/tarea.entity';
 import { Model } from 'mongoose';
 import { BuscarTareaDto } from './dto/buacar-tarea.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 
 @Injectable()
 export class TareasService {

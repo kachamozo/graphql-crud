@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
-import { Tarea } from 'src/tareas/entities/tarea.entity';
+import { Tarea } from '../../tareas/entities/tarea.entity';
 import * as bcrypt from 'bcrypt';
 
 //<-------------Middleware Graphql--------------->

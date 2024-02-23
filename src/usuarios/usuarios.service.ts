@@ -3,9 +3,9 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './entities/usuario.entity';
 import { Model } from 'mongoose';
-import { Tarea } from 'src/tareas/entities/tarea.entity';
+import { Tarea } from '../tareas/entities/tarea.entity';
 import * as bcrypt from 'bcrypt';
-import { RegisterDto } from 'src/auth/dto/regsiter.dto';
+import { RegisterDto } from '../auth/dto/regsiter.dto';
 
 @Injectable()
 export class UsuariosService {

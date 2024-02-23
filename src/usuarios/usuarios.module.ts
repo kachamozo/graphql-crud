@@ -3,7 +3,7 @@ import { UsuariosService } from './usuarios.service';
 import { UsuariosResolver } from './usuarios.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Usuario, UsuarioSchema } from './entities/usuario.entity';
-import { Tarea, TareaSchema } from 'src/tareas/entities/tarea.entity';
+import { Tarea, TareaSchema } from '../tareas/entities/tarea.entity';
 
 @Module({
   imports: [
