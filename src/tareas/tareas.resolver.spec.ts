@@ -20,33 +20,79 @@ describe('TareasResolver (e2e)', () => {
   });
 
   // DESCRIBE BASE GENERAL
-  it('tareas getAll', () => {
-    // IT FUNCION1
-    // LOGIN
+  describe('GET ALL', () => {
+    let token: string = '';
 
-    // IT FUNCION2
-    // LISTARTAREAS
-
-    // IT FUNCION3
-    // INAUTIRAZADO
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5AanVhbi5jb20iLCJpYXQiOjE3MDg3MTUxNjYsImV4cCI6MTcwODcxNTc2Nn0.SSI3SLZu5gl3xr4O0crBM1YlVOgzQPxHHfnOQ0gykWE';
-    return request(app.getHttpServer())
-      .post(gql)
-      .set('Authorization', `Bearer ${token}`)
-      .send({
-        query: `
-        query ListaDeTareas {
-          listaDeTareas {
-            _id
-            nombre
+    // FUNCION 1
+    it('login', () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation LoginUsuario($loginUser: LoginDto!) {
+            loginUsuario(loginUser: $loginUser) {
+          token    
+            }
           }
-        }
-        `,
-        // variables: {},
-      })
-      .expect(200)
-      .expect((res) => console.log(res.body.data.listaDeTareas));
+          
+          `,
+          variables: {
+            loginUser: {
+              email: 'juan@juan.com',
+              password: 'Juan123',
+            },
+          },
+        })
+        .expect(200)
+        .expect((res) => {
+          console.log(res.body.data.loginUsuario);
+          token = res.body.data.loginUsuario.token;
+        });
+    });
+
+    // FUNCION 2
+    it('tareas getAll', () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          query: `
+          query ListaDeTareas {
+            listaDeTareas {
+              _id
+              nombre
+            }
+          }
+          `,
+          // variables: {},
+        })
+        .expect(200)
+        .expect((res) => console.log(res.body.data.listaDeTareas));
+    });
+
+    // FUNCION 3
+    it('espero un INAUTHIORZADO', () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          query ListaDeTareas {
+            listaDeTareas {
+              _id
+              nombre
+            }
+          }
+          `,
+          // variables: {},
+        })
+        .expect(400);
+    });
   });
-  // it('')
+  // it('GETALL TAREAS', () => {
+  //   const token: string = ''
+
+  //   it('login', () => {
+  //     expect(app).toBeDefined();
+  //   });
+  // });
 });
