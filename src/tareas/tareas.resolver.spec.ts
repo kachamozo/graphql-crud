@@ -19,7 +19,7 @@ describe('TareasResolver (e2e)', () => {
     expect(app).toBeDefined();
   });
 
-  // DESCRIBE BASE GENERAL
+  // FINDALL busca todas las tareas
   describe('GET ALL', () => {
     let token: string = '';
 
@@ -176,6 +176,92 @@ describe('TareasResolver (e2e)', () => {
         });
       expect(res.status).toBe(200);
       expect(res.body.errors[0].message).toBe('Tarea no encontrada');
+    });
+  });
+
+  // CREATE crea una tarea
+  describe('CREATE', () => {
+    // it('debe crear una tarea', async () => {
+    //   const id = '65b013c8410c84fa57c15bd1';
+    //   const res = await request(app.getHttpServer())
+    //     .post(gql)
+    //     .send({
+    //       query: `
+    //       mutation CrearTarea($data: CreateTareaDto!) {
+    //         crearTarea(data: $data) {
+    //           _id
+    //           nombre
+    //           usuario{
+    //             _id
+    //           }
+    //         }
+    //       }
+    //       `,
+    //       variables: {
+    //         data: {
+    //           nombre: 'Tarea 1',
+    //           descripcion: 'Descripcion de la tarea 1',
+    //           usuarioId: id,
+    //         },
+    //       },
+    //     });
+    //   expect(res.status).toBe(200);
+    //   expect(res.body.data.crearTarea).toHaveProperty('_id');
+    //   expect(res.body.data.crearTarea).toHaveProperty('usuario');
+    // });
+    it('debe retornar ID invalido', async () => {
+      const id = '123456';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation CrearTarea($data: CreateTareaDto!) {
+            crearTarea(data: $data) {
+              _id
+              nombre
+              usuario{
+                _id
+              }
+            }
+          }
+          `,
+          variables: {
+            data: {
+              nombre: 'Tarea 1',
+              descripcion: 'Descripcion de la tarea 1',
+              usuarioId: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('ID inválido');
+    });
+    it('debe retornar Usuario no encontrado', async () => {
+      const id = '65d8a07af6892e431ff0499e';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation CrearTarea($data: CreateTareaDto!) {
+            crearTarea(data: $data) {
+              _id
+              nombre
+              usuario{
+                _id
+              }
+            }
+          }
+          `,
+          variables: {
+            data: {
+              nombre: 'Tarea 1',
+              descripcion: 'Descripcion de la tarea 1',
+              usuarioId: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('Usuario no encontrado');
     });
   });
 });

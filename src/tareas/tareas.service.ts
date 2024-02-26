@@ -15,8 +15,15 @@ export class TareasService {
   ) {}
 
   async create(createTarea: CreateTareaDto): Promise<Tarea> {
+    //verificamos que el id que nos pasan sea valido
+    if (!Types.ObjectId.isValid(createTarea.usuarioId)) {
+      throw new Error('ID inválido');
+    }
     // Buscar al usuario
     const usuario = await this.usuarioModel.findById(createTarea.usuarioId);
+
+    if (!usuario)
+      throw new HttpException('Usuario no encontrado', HttpStatus.FORBIDDEN);
 
     // Crear la tarea
     const tarea = new this.tareaModel({
