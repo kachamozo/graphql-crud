@@ -148,7 +148,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(400);
       expect(res.body.errors[0].message).toBe('ID inválido');
     });
     it('debe retornar tarea no encontrada', async () => {
@@ -174,7 +174,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(404);
       expect(res.body.errors[0].message).toBe('Tarea no encontrada');
     });
   });
@@ -233,7 +233,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(400);
       expect(res.body.errors[0].message).toBe('ID inválido');
     });
     it('debe retornar Usuario no encontrado', async () => {
@@ -260,7 +260,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(404);
       expect(res.body.errors[0].message).toBe('Usuario no encontrado');
     });
   });
@@ -324,7 +324,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(400);
       expect(res.body.errors[0].message).toBe('ID inválido');
     });
 
@@ -355,7 +355,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(404);
       expect(res.body.errors[0].message).toBe('Tarea no encontrada');
     });
   });
@@ -397,7 +397,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(400);
       expect(res.body.errors[0].message).toBe('ID inválido');
     });
 
@@ -417,7 +417,7 @@ describe('TareasResolver (e2e)', () => {
             },
           },
         });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(404);
       expect(res.body.errors[0].message).toBe('Tarea no encontrada');
     });
   });
