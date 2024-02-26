@@ -34,7 +34,6 @@ describe('TareasResolver (e2e)', () => {
           token    
             }
           }
-          
           `,
           variables: {
             loginUser: {
@@ -67,7 +66,10 @@ describe('TareasResolver (e2e)', () => {
           // variables: {},
         })
         .expect(200)
-        .expect((res) => console.log(res.body.data.listaDeTareas));
+        .expect((res) => console.log(res.body.data.listaDeTareas))
+        .expect((res) => {
+          expect(res.body.data.listaDeTareas).toBeInstanceOf(Array);
+        });
     });
 
     // FUNCION 3
@@ -85,14 +87,47 @@ describe('TareasResolver (e2e)', () => {
           `,
           // variables: {},
         })
-        .expect(400);
+        .expect(200)
+        .expect((res) => {
+          console.log(res.body.errors[0].message);
+          expect(res.body.errors[0].message).toBe('Unauthorized');
+        });
     });
   });
-  // it('GETALL TAREAS', () => {
-  //   const token: string = ''
 
-  //   it('login', () => {
-  //     expect(app).toBeDefined();
-  //   });
-  // });
+  // FINDBYID busca por id
+  describe('GET BY ID', () => {
+    const id = '65d8a07af6892e431ff0499e';
+    // const id = '1234567890';
+    it('debe retornar una tarea', async () => {
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          query BuscarTarea($busqueda: BuscarTareaDto!) {
+            buscarTarea(busqueda: $busqueda) {
+              _id
+              nombre
+              usuario{
+                _id
+                email
+              }
+            }
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      if (res.body.errors)
+        expect(res.body.errors[0].message).toBe('Tarea no encontrada');
+      else {
+        expect(res.body.data.buscarTarea).toHaveProperty('_id');
+        expect(res.body.data.buscarTarea).toHaveProperty('nombre');
+      }
+    });
+  });
 });

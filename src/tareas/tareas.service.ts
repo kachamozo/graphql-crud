@@ -36,10 +36,13 @@ export class TareasService {
     return this.tareaModel.find().populate('usuario', 'email name').exec();
   }
   findById(busqueda: BuscarTareaDto): Promise<Tarea> {
-    return this.tareaModel
-      .findById(busqueda._id)
-      .populate('usuario', 'name email')
-      .exec();
+    const tarea = this.tareaModel
+      .findById(busqueda)
+      .populate('usuario', 'email name ');
+
+    if (tarea.error)
+      throw new HttpException('Tarea no encontrada', HttpStatus.FORBIDDEN);
+    return tarea;
   }
 
   //Cuando se usa un dto como buscar tarea dto siempre es un objeto, nunca colocar busqueda._id
