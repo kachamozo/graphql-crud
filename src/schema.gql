@@ -52,7 +52,6 @@ input CreateTareaDto {
 input UpdateTareaDto {
   nombre: String
   descripcion: String
-  usuarioId: String
 }
 
 input UpdateUsuarioDto {

@@ -264,4 +264,161 @@ describe('TareasResolver (e2e)', () => {
       expect(res.body.errors[0].message).toBe('Usuario no encontrado');
     });
   });
+
+  // UPDATE actualiza una tarea
+  describe('UPDATE', () => {
+    it('debe actualizar una tarea', async () => {
+      const id = '65dca8d85104f30995a78ea8';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation UpdateTarea($busqueda: BuscarTareaDto!, $data: UpdateTareaDto!) {
+            updateTarea(busqueda: $busqueda, data: $data) {
+              _id
+              nombre
+              descripcion
+              usuario{
+                _id
+              }
+            }
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+            data: {
+              nombre: 'Tarea 20',
+              descripcion: 'Descripcion de la tarea 20',
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.data.updateTarea).toHaveProperty('_id');
+    });
+    it('debe retornar ID invalido', async () => {
+      const id = '123456';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation UpdateTarea($busqueda: BuscarTareaDto!, $data: UpdateTareaDto!) {
+            updateTarea(busqueda: $busqueda, data: $data) {
+              _id
+              nombre
+              descripcion
+              usuario{
+                _id
+              }
+            }
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+            data: {
+              nombre: 'Tarea 20',
+              descripcion: 'Descripcion de la tarea 20',
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('ID inválido');
+    });
+
+    it('debe retornar Tarea no encontrada', async () => {
+      const id = '65dca8ca5104f30995a78ea0';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation UpdateTarea($busqueda: BuscarTareaDto!, $data: UpdateTareaDto!) {
+            updateTarea(busqueda: $busqueda, data: $data) {
+              _id
+              nombre
+              descripcion
+              usuario{
+                _id
+              }
+            }
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+            data: {
+              nombre: 'Tarea 20',
+              descripcion: 'Descripcion de la tarea 20',
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('Tarea no encontrada');
+    });
+  });
+
+  // DELETE elimina una tarea
+  describe('DELETE', () => {
+    // it('debe eliminar una tarea', async () => {
+    //   const id = '65dca87a5104f30995a78e9e';
+    //   const res = await request(app.getHttpServer())
+    //     .post(gql)
+    //     .send({
+    //       query: `
+    //       mutation EliminarTarea($busqueda: BuscarTareaDto!) {
+    //         eliminarTarea(busqueda: $busqueda)
+    //       }
+    //       `,
+    //       variables: {
+    //         busqueda: {
+    //           _id: id,
+    //         },
+    //       },
+    //     });
+    //   expect(res.status).toBe(200);
+    //   expect(res.body.data.eliminarTarea).toBe('Tarea eliminada exitosamente');
+    // });
+    it('debe retornar ID invalido', async () => {
+      const id = '123456';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation EliminarTarea($busqueda: BuscarTareaDto!) {
+            eliminarTarea(busqueda: $busqueda)
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('ID inválido');
+    });
+
+    it('debe retornar Tarea no encontrada', async () => {
+      const id = '65dca8ca5104f30995a78ea0';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation EliminarTarea($busqueda: BuscarTareaDto!) {
+            eliminarTarea(busqueda: $busqueda)
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('Tarea no encontrada');
+    });
+  });
 });

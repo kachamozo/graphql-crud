@@ -58,6 +58,9 @@ export class TareasService {
 
   //Cuando se usa un dto como buscar tarea dto siempre es un objeto, nunca colocar busqueda._id
   async update(busqueda: BuscarTareaDto, updateTarea: UpdateTareaDto) {
+    if (!Types.ObjectId.isValid(busqueda._id)) {
+      throw new Error('ID inválido');
+    }
     const findTarea = await this.tareaModel.findById(busqueda).exec();
 
     if (!findTarea)
@@ -70,9 +73,12 @@ export class TareasService {
 
   //: Promise<Tarea> me da error talves sea que al eliminar ya no se puede leer los datos la verdad no se
   async delete(busqueda: BuscarTareaDto) {
-    const data = await this.tareaModel.findByIdAndDelete(busqueda._id);
+    if (!Types.ObjectId.isValid(busqueda._id)) {
+      throw new Error('ID inválido');
+    }
+    const data = await this.tareaModel.findByIdAndDelete(busqueda).exec();
     if (!data)
-      throw new HttpException('Error al borrar la tarea', HttpStatus.FORBIDDEN);
-    return 'Eliminado exitosamente';
+      throw new HttpException('Tarea no encontrada', HttpStatus.FORBIDDEN);
+    return 'Tarea eliminada exitosamente';
   }
 }
