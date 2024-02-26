@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tarea } from './entities/tarea.entity';

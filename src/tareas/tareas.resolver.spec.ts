@@ -20,7 +20,7 @@ describe('TareasResolver (e2e)', () => {
   });
 
   // FINDALL busca todas las tareas
-  describe('GET ALL', () => {
+  describe('FIND ALL', () => {
     let token: string = '';
 
     // FUNCION 1
@@ -66,7 +66,6 @@ describe('TareasResolver (e2e)', () => {
           // variables: {},
         })
         .expect(200)
-        .expect((res) => console.log(res.body.data.listaDeTareas))
         .expect((res) => {
           expect(res.body.data.listaDeTareas).toBeInstanceOf(Array);
         });
@@ -96,7 +95,7 @@ describe('TareasResolver (e2e)', () => {
   });
 
   // FINDBYID busca por id
-  describe('GET BY ID', () => {
+  describe('FIND BY ID', () => {
     it('debe retornar una tarea', async () => {
       const id = '65d8a07af6892e431ff0499e';
       const res = await request(app.getHttpServer())
