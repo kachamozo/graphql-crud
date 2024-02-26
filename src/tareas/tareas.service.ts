@@ -17,13 +17,13 @@ export class TareasService {
   async create(createTarea: CreateTareaDto): Promise<Tarea> {
     //verificamos que el id que nos pasan sea valido
     if (!Types.ObjectId.isValid(createTarea.usuarioId)) {
-      throw new Error('ID inválido');
+      throw new HttpException('ID inválido', HttpStatus.BAD_REQUEST);
     }
     // Buscar al usuario
     const usuario = await this.usuarioModel.findById(createTarea.usuarioId);
 
     if (!usuario)
-      throw new HttpException('Usuario no encontrado', HttpStatus.FORBIDDEN);
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
 
     // Crear la tarea
     const tarea = new this.tareaModel({
@@ -44,14 +44,13 @@ export class TareasService {
   }
   async findById(busqueda: BuscarTareaDto): Promise<Tarea> {
     if (!Types.ObjectId.isValid(busqueda._id)) {
-      throw new Error('ID inválido');
+      throw new HttpException('ID inválido', 400);
     }
     const tarea = await this.tareaModel
       .findById(busqueda)
       .populate('usuario', 'email name ');
 
-    if (!tarea)
-      throw new HttpException('Tarea no encontrada', HttpStatus.FORBIDDEN);
+    if (!tarea) throw new HttpException('Tarea no encontrada', 404);
 
     return tarea;
   }
@@ -59,12 +58,11 @@ export class TareasService {
   //Cuando se usa un dto como buscar tarea dto siempre es un objeto, nunca colocar busqueda._id
   async update(busqueda: BuscarTareaDto, updateTarea: UpdateTareaDto) {
     if (!Types.ObjectId.isValid(busqueda._id)) {
-      throw new Error('ID inválido');
+      throw new HttpException('ID inválido', HttpStatus.BAD_REQUEST);
     }
     const findTarea = await this.tareaModel.findById(busqueda).exec();
 
-    if (!findTarea)
-      throw new HttpException('Tarea no encontrada', HttpStatus.FORBIDDEN);
+    if (!findTarea) throw new HttpException('Tarea no encontrada', 404);
 
     return this.tareaModel.findByIdAndUpdate(busqueda, updateTarea, {
       new: true,
@@ -74,11 +72,10 @@ export class TareasService {
   //: Promise<Tarea> me da error talves sea que al eliminar ya no se puede leer los datos la verdad no se
   async delete(busqueda: BuscarTareaDto) {
     if (!Types.ObjectId.isValid(busqueda._id)) {
-      throw new Error('ID inválido');
+      throw new HttpException('ID inválido', 400);
     }
     const data = await this.tareaModel.findByIdAndDelete(busqueda).exec();
-    if (!data)
-      throw new HttpException('Tarea no encontrada', HttpStatus.FORBIDDEN);
+    if (!data) throw new HttpException('Tarea no encontrada', 404);
     return 'Tarea eliminada exitosamente';
   }
 }
