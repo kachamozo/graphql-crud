@@ -97,9 +97,8 @@ describe('TareasResolver (e2e)', () => {
 
   // FINDBYID busca por id
   describe('GET BY ID', () => {
-    const id = '65d8a07af6892e431ff0499e';
-    // const id = '1234567890';
     it('debe retornar una tarea', async () => {
+      const id = '65d8a07af6892e431ff0499e';
       const res = await request(app.getHttpServer())
         .post(gql)
         .send({
@@ -122,12 +121,61 @@ describe('TareasResolver (e2e)', () => {
           },
         });
       expect(res.status).toBe(200);
-      if (res.body.errors)
-        expect(res.body.errors[0].message).toBe('Tarea no encontrada');
-      else {
-        expect(res.body.data.buscarTarea).toHaveProperty('_id');
-        expect(res.body.data.buscarTarea).toHaveProperty('nombre');
-      }
+      expect(res.body.data.buscarTarea).toHaveProperty('_id');
+      expect(res.body.data.buscarTarea).toHaveProperty('nombre');
+    });
+
+    it('debe retornar mensaje de error Id invalido', async () => {
+      const id = '65d8a07af689';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          query BuscarTarea($busqueda: BuscarTareaDto!) {
+            buscarTarea(busqueda: $busqueda) {
+              _id
+              nombre
+              usuario{
+                _id
+                email
+              }
+            }
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('ID inválido');
+    });
+    it('debe retornar tarea no encontrada', async () => {
+      const id = '65d8a07af6892e431ff04997';
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          query BuscarTarea($busqueda: BuscarTareaDto!) {
+            buscarTarea(busqueda: $busqueda) {
+              _id
+              nombre
+              usuario{
+                _id
+                email
+              }
+            }
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: id,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.errors[0].message).toBe('Tarea no encontrada');
     });
   });
 });

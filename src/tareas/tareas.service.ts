@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tarea } from './entities/tarea.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BuscarTareaDto } from './dto/buacar-tarea.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
 import { Usuario } from '../usuarios/entities/usuario.entity';
@@ -35,13 +35,17 @@ export class TareasService {
   findAll(): Promise<Tarea[]> {
     return this.tareaModel.find().populate('usuario', 'email name').exec();
   }
-  findById(busqueda: BuscarTareaDto): Promise<Tarea> {
-    const tarea = this.tareaModel
+  async findById(busqueda: BuscarTareaDto): Promise<Tarea> {
+    if (!Types.ObjectId.isValid(busqueda._id)) {
+      throw new Error('ID inválido');
+    }
+    const tarea = await this.tareaModel
       .findById(busqueda)
       .populate('usuario', 'email name ');
 
-    if (tarea.error)
+    if (!tarea)
       throw new HttpException('Tarea no encontrada', HttpStatus.FORBIDDEN);
+
     return tarea;
   }
 
