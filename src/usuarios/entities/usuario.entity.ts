@@ -50,7 +50,10 @@ export class Usuario {
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);
 
 UsuarioSchema.pre('save', async function (next) {
-  this.password = await bcrypt.hash(this.password, 10);
+  if (this.isNew) {
+    // Solo hashea la contraseña si el usuario es nuevo
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 
   next();
 });

@@ -7,11 +7,17 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { GraphQLModule } from '@nestjs/graphql';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
+console.log(process.env.NODE_ENV);
 //Instalamos npm i @nestjs/mongoose mongoose y hacemos la conexion a la base de datos
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/graphql-crud'),
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+
+    MongooseModule.forRoot(process.env.MONGOURL),
     TareasModule,
     UsuariosModule,
 

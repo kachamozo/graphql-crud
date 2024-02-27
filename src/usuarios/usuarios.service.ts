@@ -30,7 +30,10 @@ export class UsuariosService {
   }
 
   findOneById(id: string): Promise<Usuario> {
-    return this.usuarioModel.findById(id);
+    return this.usuarioModel
+      .findById(id)
+      .populate('tareas', 'nombre descripcion')
+      .exec();
   }
   async update(id: string, updateUsuario: UpdateUsuarioDto) {
     const findUser = await this.usuarioModel.findById(id).exec();
