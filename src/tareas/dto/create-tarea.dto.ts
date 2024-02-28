@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class CreateTareaDto {
@@ -15,5 +15,6 @@ export class CreateTareaDto {
 
   @Field(() => String)
   @IsString()
-  usuarioId: string;
+  @IsOptional()
+  usuarioId?: string;
 }

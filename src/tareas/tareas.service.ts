@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tarea } from './entities/tarea.entity';
-import { Model, ObjectId, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BuscarTareaDto } from './dto/buacar-tarea.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
 import { Usuario } from '../usuarios/entities/usuario.entity';
@@ -86,45 +86,21 @@ export class TareasService {
     });
   }
 
-  //: Promise<Tarea> me da error talves sea que al eliminar ya no se puede leer los datos la verdad no se
-  // if (!Types.ObjectId.isValid(busqueda._id)) {
-  //   throw new GraphQLError('ID inválido', {
-  //     extensions: { http: { status: 400 } },
-  //   });
-  // }
-  // const idUser = await this.usuarioModel.findById(busqueda._id).exec();
-  // console.log(idUser);
-  // const data = await this.tareaModel.findByIdAndDelete(busqueda._id).exec();
-  // console.log(data);
-  // if (!data)
-  //   throw new GraphQLError('Tarea no encontrada', {
-  //     extensions: { http: { status: 404 } },
-  //   });
   async delete(busqueda: BuscarTareaDto) {
-    // {
-    //   _id: new ObjectId('65de0e49d4a6c9e004a55453'),
-    //   nombre: 'Tarea 20',
-    //   descripcion: 'Descripcion de la tarea 10',
-    //   usuario: new ObjectId('65de0649a87b309315cb5d5d'),
-    //   __v: 0
-    // }
-    // RES tiene el userID y tareaID
-    interface TareaProps {
-      _id: ObjectId;
-      nombre: string;
-      descripcion: string;
-      usuario: ObjectId;
-      __v: number;
+    if (!Types.ObjectId.isValid(busqueda._id)) {
+      throw new GraphQLError('ID inválido', {
+        extensions: { http: { status: 400 } },
+      });
     }
-    const res = await this.tareaModel.findByIdAndDelete(busqueda._id).exec();
-    console.log('first');
-    console.log(res);
-    const userID = res.usuario;
-    console.log('second');
-    console.log(userID);
-    // const userData = await this.usuarioModel.findById(res.usuario).exec();
-    // const filter = userData.tareas.filter((tarea) => tarea != res._id);
-    // const res2 = await this.usuarioModel.findByIdAndUpdate({_id:res.usuario},)
+
+    const findTarea = await this.tareaModel.findById(busqueda).exec();
+
+    if (!findTarea)
+      throw new GraphQLError('Tarea no encontrada', {
+        extensions: { http: { status: 404 } },
+      });
+
+    await this.tareaModel.deleteOne({ _id: busqueda._id }).exec();
 
     return 'Tarea eliminada exitosamente';
   }
