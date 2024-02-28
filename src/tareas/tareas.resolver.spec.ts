@@ -46,9 +46,9 @@ describe('TareasResolver (e2e)', () => {
   });
   afterAll(async () => {
     const userService = app.get(UsuariosService);
-    const tareaService = app.get(TareasService);
+    // const tareaService = app.get(TareasService);
     await userService.delete(userID.toString());
-    await tareaService.delete(tareaID);
+    // await tareaService.delete(tareaID);
   });
 
   /**
@@ -399,25 +399,24 @@ describe('TareasResolver (e2e)', () => {
 
   // DELETE elimina una tarea
   describe('DELETE', () => {
-    // it('debe eliminar una tarea', async () => {
-    //   const id = '65dca87a5104f30995a78e9e';
-    //   const res = await request(app.getHttpServer())
-    //     .post(gql)
-    //     .send({
-    //       query: `
-    //       mutation EliminarTarea($busqueda: BuscarTareaDto!) {
-    //         eliminarTarea(busqueda: $busqueda)
-    //       }
-    //       `,
-    //       variables: {
-    //         busqueda: {
-    //           _id: id,
-    //         },
-    //       },
-    //     });
-    //   expect(res.status).toBe(200);
-    //   expect(res.body.data.eliminarTarea).toBe('Tarea eliminada exitosamente');
-    // });
+    it('debe eliminar una tarea', async () => {
+      const res = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `
+          mutation EliminarTarea($busqueda: BuscarTareaDto!) {
+            eliminarTarea(busqueda: $busqueda)
+          }
+          `,
+          variables: {
+            busqueda: {
+              _id: tareaID,
+            },
+          },
+        });
+      expect(res.status).toBe(200);
+      expect(res.body.data.eliminarTarea).toBe('Tarea eliminada exitosamente');
+    });
     it('debe retornar ID invalido', async () => {
       const id = '123456';
       const res = await request(app.getHttpServer())
